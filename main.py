@@ -53,3 +53,7 @@ def get_all_applications(db: Session = Depends(get_db)):
     return db.query(Application).all()
 
 
+@app.get("/applications/{status}")
+def get_by_status(status: str, db: Session = Depends(get_db)):
+    return db.query(Application).filter(Application.status == status).all()
+
