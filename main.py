@@ -57,3 +57,14 @@ def get_all_applications(db: Session = Depends(get_db)):
 def get_by_status(status: str, db: Session = Depends(get_db)):
     return db.query(Application).filter(Application.status == status).all()
 
+
+@app.get("/stats")
+def get_stats(db: Session = Depends(get_db)):
+    total = db.query(Application).count()
+    interviews = db.query(Application).filter(Application.status == "Interview").count()
+
+    return {
+        "total_applications": total,
+        "interview_count": interviews,
+        "success_rate": interviews / total if total > 0 else 0
+    }
